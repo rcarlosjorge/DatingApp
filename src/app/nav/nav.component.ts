@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import { Observable, of } from 'rxjs';
 import { AccountService } from 'src/services/account.service';
+import { User } from '../models/user';
 
 @Component({
   selector: 'app-nav',
@@ -8,21 +10,22 @@ import { AccountService } from 'src/services/account.service';
 })
 export class NavComponent {
   model: any = {};
-  loggedIn: boolean = false;
 
-  constructor(private accountService: AccountService) {}
+  constructor(public accountService: AccountService) {}
+
+  ngOnInit(): void {
+  }
 
   login() {
     this.accountService.login(this.model).subscribe({
       next: (response) => {
         console.log(response);
-        this.loggedIn = true;
       },
       error: (error) => console.log(error),
     });
   }
 
   logout() {
-    this.loggedIn = false;
+    this.accountService.logout();
   }
 }
